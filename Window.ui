@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Window</class>
+ <widget class="QMainWindow" name="Window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QMine</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPlainTextEdit" name="plainTextEdit"/>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>400</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionFindFile"/>
+    <addaction name="separator"/>
+    <addaction name="actionSaveFile"/>
+    <addaction name="actionSaveFileAs"/>
+    <addaction name="actionSaveFileOnServer"/>
+    <addaction name="actionSaveFileOnServerAs"/>
+    <addaction name="separator"/>
+    <addaction name="actionKillBuffer"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionOverwriteMode"/>
+    <addaction name="separator"/>
+    <addaction name="actionUndoRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionKillLine"/>
+    <addaction name="actionYank"/>
+    <addaction name="actionYankPop"/>
+   </widget>
+   <widget class="QMenu" name="menuServer">
+    <property name="title">
+     <string>Server</string>
+    </property>
+    <addaction name="actionAuthenticate"/>
+    <addaction name="actionSignup"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuServer"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionFindFile">
+   <property name="text">
+    <string>Find File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D, Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionSaveFile">
+   <property name="text">
+    <string>Save File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D, Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSaveFileAs">
+   <property name="text">
+    <string>Save File As...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D, Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionSaveFileOnServer">
+   <property name="text">
+    <string>Save File on Server</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D, Alt+S</string>
+   </property>
+  </action>
+  <action name="actionSaveFileOnServerAs">
+   <property name="text">
+    <string>Save File on Server As...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D, Alt+W</string>
+   </property>
+  </action>
+  <action name="actionKillBuffer">
+   <property name="text">
+    <string>Kill Buffer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D, K</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D, Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionOverwriteMode">
+   <property name="text">
+    <string>Overwrite Mode</string>
+   </property>
+   <property name="shortcut">
+    <string>Ins</string>
+   </property>
+  </action>
+  <action name="actionUndoRedo">
+   <property name="text">
+    <string>Undo / Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+/</string>
+   </property>
+  </action>
+  <action name="actionKillLine">
+   <property name="text">
+    <string>Kill Line</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K</string>
+   </property>
+  </action>
+  <action name="actionYank">
+   <property name="text">
+    <string>Yank</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionYankPop">
+   <property name="text">
+    <string>Yank Pop</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Y</string>
+   </property>
+  </action>
+  <action name="actionAuthenticate">
+   <property name="text">
+    <string>Authenticate</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D, Alt+A</string>
+   </property>
+  </action>
+  <action name="actionSignup">
+   <property name="text">
+    <string>Signup</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D, Alt+R</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
