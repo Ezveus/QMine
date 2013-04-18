@@ -4,17 +4,27 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = QMine
 TEMPLATE = app
 
+!win32 {
+    QMAKE_CXXFLAGS  += -W -Wall -std=c++11
+}
 
 SOURCES += main.cpp\
-        Window.cpp
+        Window.cpp \
+    ConnectionDialog.cpp \
+    requests/AuthenticateRequest.cpp \
+    requests/IRequest.cpp
 
-HEADERS  += Window.hpp
+HEADERS  += Window.hpp \
+    ConnectionDialog.hpp \
+    requests/AuthenticateRequest.hpp \
+    requests/IRequest.hpp
 
-FORMS    += Window.ui
+FORMS    += Window.ui \
+    ConnectionDialog.ui
