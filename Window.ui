@@ -59,6 +59,7 @@
      <string>File</string>
     </property>
     <addaction name="actionFindFile"/>
+    <addaction name="actionFindFileOnServer"/>
     <addaction name="separator"/>
     <addaction name="actionSaveFile"/>
     <addaction name="actionSaveFileAs"/>
@@ -219,6 +220,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+D, Alt+C</string>
+   </property>
+  </action>
+  <action name="actionFindFileOnServer">
+   <property name="text">
+    <string>Find File on Server</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D, Alt+F</string>
    </property>
   </action>
  </widget>

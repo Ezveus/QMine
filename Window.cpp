@@ -2,8 +2,10 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QFileDialog>
 #include "Window.hpp"
 #include "ui_Window.h"
+#include "requests/LoadRequest.hpp"
 
 QMine::Window::Window(QWidget *parent) :
 	QMainWindow(parent),
@@ -14,7 +16,8 @@ QMine::Window::Window(QWidget *parent) :
 	isAuthenticated = false;
 	hasFile = false;
 	self = nullptr;
-	requests = new QHash<QString, Requests::IRequest*>();
+	requests = new QHash<QString, Requests::ARequest*>();
+	requestsmethods = new QHash<Requests::RequestType, std::function<void()>>();
 
 	ui->setupUi(this);
 
@@ -22,6 +25,7 @@ QMine::Window::Window(QWidget *parent) :
 	menuEditConnections();
 	menuServerConnections();
 	networkConnections();
+	requestsMethodsFilling();
 }
 
 QMine::Window::~Window() {
@@ -33,14 +37,22 @@ QMine::Window::~Window() {
 	delete ui;
 }
 
-void QMine::Window::authenticate() {
-	isAuthenticated = true;
-	ui->statusLabel->setText("Authenticated");
-}
-
 void QMine::Window::menuFileConnections() {
 	connect(ui->actionFindFile, &QAction::triggered, [=]() {
-		QMessageBox::information(this, "QMine", "Find file !!!");
+		if (isConnected && isAuthenticated) {
+			Requests::LoadRequest *fr = new Requests::LoadRequest(QFileDialog::getOpenFileName(this, "Find local file", QDir::homePath()),
+																 Requests::LoadRequest::Up);
+
+			socket->write(fr->toString());
+			requests->insert(fr->getId(), fr);
+		} else if (!isConnected) {
+			ui->statusLabel->setText("Disconnected");
+		} else if (!isAuthenticated) {
+			ui->statusLabel->setText("Not authenticated");
+		}
+	});
+	connect(ui->actionFindFileOnServer, &QAction::triggered, [=]() {
+		QMessageBox::information(this, "QMine", "Find file on Server !!!");
 	});
 	connect(ui->actionSaveFile, &QAction::triggered, [=]() {
 		QMessageBox::information(this, "QMine", "Save file !!!");
@@ -134,11 +146,8 @@ void QMine::Window::dataReceived() {
 		}
 		QJsonObject o = jsondoc.object();
 		QString id = o["id"].toString();
-		Requests::IRequest *rqst = requests->value(id);
-		rqst->response(this, [&]() {
-			isAuthenticated = true;
-			ui->statusLabel->setText("Authenticated");
-		}, &o);
+		Requests::ARequest *rqst = requests->value(id);
+		rqst->response(&o, requestsmethods->value(rqst->getType()));
 	} else if (rqst == "SYNC") {
 		ui->statusLabel->setText(QString("Received SYNC : ") + json);
 	} else if (rqst == "QUIT") {
@@ -172,4 +181,11 @@ void QMine::Window::networkConnections(){
 	});
 	connect(socket, &QTcpSocket::readyRead, this, &QMine::Window::dataReceived);
 	connect(socket, SIGNAL(error), this, SLOT(errorReceived(QAbstractSocket::SocketError)));
+}
+
+void QMine::Window::requestsMethodsFilling() {
+	requestsmethods->insert(Requests::Authenticate, [&]() {
+		isAuthenticated = true;
+		ui->statusLabel->setText("Authenticated");
+	});
 }

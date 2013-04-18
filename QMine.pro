@@ -19,12 +19,14 @@ SOURCES += main.cpp\
         Window.cpp \
     ConnectionDialog.cpp \
     requests/AuthenticateRequest.cpp \
-    requests/IRequest.cpp
+    requests/ARequest.cpp \
+    requests/LoadRequest.cpp
 
 HEADERS  += Window.hpp \
     ConnectionDialog.hpp \
     requests/AuthenticateRequest.hpp \
-    requests/IRequest.hpp
+    requests/ARequest.hpp \
+    requests/LoadRequest.hpp
 
 FORMS    += Window.ui \
     ConnectionDialog.ui

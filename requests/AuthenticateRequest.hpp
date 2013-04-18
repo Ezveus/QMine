@@ -1,37 +1,28 @@
 #include <QString>
-#include "IRequest.hpp"
+#include "ARequest.hpp"
 
 #ifndef AUTHENTICATEREQUEST_HPP
 #define AUTHENTICATEREQUEST_HPP
 
 namespace QMine {
-	namespace Requests {
-		class AuthenticateRequest : public IRequest {
-		public:
-			AuthenticateRequest(QString name, QString pass);
-			virtual ~AuthenticateRequest();
+  namespace Requests {
+    class AuthenticateRequest : public ARequest {
+    public:
+      AuthenticateRequest(QString name, QString pass);
+      virtual ~AuthenticateRequest();
 
-			virtual QString toQString();
-			virtual const char *toString();
-			virtual int length();
-			virtual QString getId();
-			virtual RequestType getType();
-			// virtual void response(Window *w, WinRqstFunc f, QJsonObject const *o) override;
-			virtual void response(Window *w, std::function<void()> f, QJsonObject const *o) override;
+      QString getName();
+      QString getPass();
 
-			QString getName();
-			QString getPass();
+    private:
+      AuthenticateRequest();
+      AuthenticateRequest(AuthenticateRequest const&);
+      AuthenticateRequest& operator=(AuthenticateRequest const&);
 
-		private:
-			AuthenticateRequest();
-
-			QString name;
-			QString pass;
-			QString request;
-			QString id;
-			RequestType type;
-		};
-	}
+      QString name;
+      QString pass;
+    };
+  }
 }
 
 #endif // AUTHENTICATEREQUEST_HPP

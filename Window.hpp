@@ -1,6 +1,6 @@
 #include <QMainWindow>
 #include <QTcpSocket>
-#include <requests/AuthenticateRequest.hpp>
+#include "requests/AuthenticateRequest.hpp"
 #include "ConnectionDialog.hpp"
 
 #ifndef WINDOW_HPP
@@ -17,7 +17,6 @@ namespace QMine {
 	public:
 		explicit Window(QWidget *parent = 0);
 		~Window();
-		void authenticate();
 
 	public slots:
 		void dataReceived();
@@ -28,6 +27,7 @@ namespace QMine {
 		void menuEditConnections();
 		void menuServerConnections();
 		void networkConnections();
+		void requestsMethodsFilling();
 
 		Ui::Window *ui;
 		ConnectionDialog *cDialog;
@@ -36,7 +36,8 @@ namespace QMine {
 		bool isAuthenticated;
 		bool hasFile;
 		Requests::AuthenticateRequest *self;
-		QHash<QString, Requests::IRequest*> *requests;
+		QHash<QString, Requests::ARequest*> *requests;
+		QHash<Requests::RequestType, std::function<void()>> *requestsmethods;
 	};
 }
 #endif // WINDOW_HPP
