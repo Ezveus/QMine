@@ -29,14 +29,16 @@ SOURCES += main.cpp\
     requests/AuthenticateRequest.cpp \
     requests/ARequest.cpp \
     requests/LoadRequest.cpp \
-    requests/FileUploader.cpp
+    requests/FileUploader.cpp \
+    File.cpp
 
 HEADERS  += Window.hpp \
     ConnectionDialog.hpp \
     requests/AuthenticateRequest.hpp \
     requests/ARequest.hpp \
     requests/LoadRequest.hpp \
-    requests/FileUploader.hpp
+    requests/FileUploader.hpp \
+    File.hpp
 
 FORMS    += Window.ui \
     ConnectionDialog.ui

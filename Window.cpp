@@ -18,7 +18,7 @@ QMine::Window::Window(QWidget *parent) :
   hasFile = false;
   self = nullptr;
   requests = new QHash<QString, Requests::ARequest*>();
-  requestsmethods = new QHash<Requests::RequestType, std::function<void()>>();
+  requestsmethods = new QHash<Requests::RequestType, std::function<void(const QJsonObject*)>>();
 
   ui->setupUi(this);
 
@@ -32,6 +32,7 @@ QMine::Window::Window(QWidget *parent) :
 QMine::Window::~Window() {
   if (self != nullptr)
 	delete self;
+  delete file;
   delete requests;
   delete requestsmethods;
   delete socket;
@@ -39,6 +40,9 @@ QMine::Window::~Window() {
   delete ui;
 }
 
+/*
+ ** Establish all connections of the File menu
+ */
 void QMine::Window::menuFileConnections() {
   connect(ui->actionFindFile, &QAction::triggered, [=]() {
 	if (isConnected && isAuthenticated && !hasFile) {
@@ -87,6 +91,9 @@ void QMine::Window::menuFileConnections() {
   });
 }
 
+/*
+ ** Establish all connections of the Edit menu
+ */
 void QMine::Window::menuEditConnections() {
   connect(ui->actionOverwriteMode, &QAction::triggered, [=]() {
 	QMessageBox::information(this, "QMine", "Overwrite Mode");
@@ -105,6 +112,9 @@ void QMine::Window::menuEditConnections() {
   });
 }
 
+/*
+ ** Establish all connections of the Server menu
+ */
 void QMine::Window::menuServerConnections() {
   connect(ui->actionAuthenticate, &QAction::triggered, [=]() {
 	if (isConnected && !isAuthenticated) {
@@ -116,7 +126,7 @@ void QMine::Window::menuServerConnections() {
 	} else if (isAuthenticated) {
 	  ui->statusLabel->setText("Already authenticated");
 	}
-  });
+  }); // Send the AUTHENTICATE request
   /*
    * TODO : Implement the signup
    * connect(ui->actionSignup, &QAction::triggered, [=]() {
@@ -138,6 +148,12 @@ void QMine::Window::menuServerConnections() {
   });
 }
 
+/*
+ ** Slot to manage the data reception
+ ** In case of RESPONSE, we call the associated callback
+ ** In case of SYNC, we apply the diff
+ ** In case of QUIT, we reinitialize the client to have the possibility to reconnect to a server
+ */
 void QMine::Window::dataReceived() {
   char data[MAX_RQST_SZ] = "";
 
@@ -161,6 +177,8 @@ void QMine::Window::dataReceived() {
 	QString id = o["id"].toString();
 	Requests::ARequest *rqst = requests->value(id);
 	rqst->response(&o, requestsmethods->value(rqst->getType()));
+	requests->remove(id);
+	delete rqst;
   } else if (rqst == "SYNC") {
 	ui->statusLabel->setText(QString("Received SYNC : ") + json);
   } else if (rqst == "QUIT") {
@@ -172,6 +190,9 @@ void QMine::Window::dataReceived() {
   }
 }
 
+/*
+ ** Slot to manage the errors
+ */
 void QMine::Window::errorReceived(QAbstractSocket::SocketError e) {
   switch (e) {
   case QAbstractSocket::HostNotFoundError:
@@ -182,6 +203,9 @@ void QMine::Window::errorReceived(QAbstractSocket::SocketError e) {
   }
 }
 
+/*
+ ** Establish all connections about the socket
+ */
 void QMine::Window::networkConnections(){
   connect(socket, &QTcpSocket::connected, [=]() {
 	isConnected = true;
@@ -197,14 +221,21 @@ void QMine::Window::networkConnections(){
   connect(socket, SIGNAL(error), this, SLOT(errorReceived(QAbstractSocket::SocketError)));
 }
 
+/*
+ ** Defines all callbacks about the responses
+ */
 void QMine::Window::requestsMethodsFilling() {
-  requestsmethods->insert(Requests::Authenticate, [&]() {
+  requestsmethods->insert(Requests::Authenticate, [&](const QJsonObject *) {
 	isAuthenticated = true;
 	ui->statusLabel->setText("Authenticated");
   });
-  requestsmethods->insert(Requests::Load, [&]() {
-	ui->fileName->setText("Plop");
+  requestsmethods->insert(Requests::Load, [&](const QJsonObject *o) {
+	QString id = o->value("id").toString();
+	Requests::LoadRequest *rqst = static_cast<Requests::LoadRequest*>(requests->value(id));
+	file = new File(rqst->getPath());
+
+	ui->fileName->setText(file->getTitle());
+	ui->plainTextEdit->setPlainText(file->getFile());
 	hasFile = true;
-	ui->plainTextEdit->setPlainText("Here should be some (usefull) text");
   });
 }

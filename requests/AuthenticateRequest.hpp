@@ -6,22 +6,26 @@
 
 namespace QMine {
   namespace Requests {
-    class AuthenticateRequest : public ARequest {
-    public:
-      AuthenticateRequest(QString name, QString pass);
-      virtual ~AuthenticateRequest();
+	/*
+	 ** This request represents both a AUTHENTICATE request and
+	 ** the authenticated user
+	 */
+	class AuthenticateRequest : public ARequest {
+	public:
+	  AuthenticateRequest(QString name, QString pass);
+	  virtual ~AuthenticateRequest();
 
-      QString getName();
-      QString getPass();
+	  QString getName();
+	  QString getPass();
 
-    private:
-      AuthenticateRequest();
-      AuthenticateRequest(AuthenticateRequest const&);
-      AuthenticateRequest& operator=(AuthenticateRequest const&);
+	private:
+	  AuthenticateRequest();
+	  AuthenticateRequest(AuthenticateRequest const&);
+	  AuthenticateRequest& operator=(AuthenticateRequest const&);
 
-      QString name;
-      QString pass;
-    };
+	  QString name;
+	  QString pass;
+	};
   }
 }
 

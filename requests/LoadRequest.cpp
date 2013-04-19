@@ -53,8 +53,15 @@ void QMine::Requests::LoadRequest::startUpload() {
   sleep(2);
 }
 
+/*
+ ** Converts the LOAD type to a QString
+ */
 QString QMine::Requests::LoadRequest::typeToString() {
   if (loadType == Up)
 	return QString("up");
   return QString("down");
+}
+
+QString QMine::Requests::LoadRequest::getPath() {
+  return path;
 }

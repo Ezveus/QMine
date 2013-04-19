@@ -8,8 +8,14 @@
 namespace QMine {
   namespace Requests {
 
+	/*
+	 ** This request represents a LOAD request
+	 */
 	class LoadRequest : public ARequest	{
 	public:
+	  /*
+	   ** It represents the two types of LOAD request
+	   */
 	  enum LoadType {
 		 Up,
 		 Down
@@ -22,6 +28,7 @@ namespace QMine {
 	  QByteArray getFile();
 	  void setUploader(FileUploader *fu);
 	  void startUpload();
+	  QString getPath();
 
 	private:
 	  QString typeToString();
