@@ -34,6 +34,7 @@ namespace QMine {
 
 	  virtual QString toQString();
 	  virtual const char *toString();
+	  virtual QByteArray toByteArray();
 	  virtual int length();
 	  virtual QString getId();
 	  virtual RequestType getType();

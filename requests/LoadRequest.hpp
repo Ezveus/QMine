@@ -3,6 +3,7 @@
 
 #include <QFile>
 #include "ARequest.hpp"
+#include "FileUploader.hpp"
 
 namespace QMine {
   namespace Requests {
@@ -17,6 +18,11 @@ namespace QMine {
 	  LoadRequest(QString path, LoadType type);
 	  virtual ~LoadRequest();
 
+	  int getPort();
+	  QByteArray getFile();
+	  void setUploader(FileUploader *fu);
+	  void startUpload();
+
 	private:
 	  QString typeToString();
 
@@ -26,6 +32,7 @@ namespace QMine {
 	  LoadType loadType;
 	  int port;
 	  QFile *fileToUpload;
+	  FileUploader *uploader;
 	};
 
   } // namespace Requests

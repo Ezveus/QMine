@@ -2,37 +2,37 @@
 #include "ui_ConnectionDialog.h"
 
 QMine::ConnectionDialog::ConnectionDialog(QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::ConnectionDialog) {
-	ui->setupUi(this);
+  QDialog(parent),
+  ui(new Ui::ConnectionDialog) {
+  ui->setupUi(this);
 
-	connections();
+  connections();
 }
 
 QMine::ConnectionDialog& QMine::ConnectionDialog::operator=(ConnectionDialog const& cd) {
-	ui = cd.ui;
+  ui = cd.ui;
 
-	connections();
-	return *this;
+  connections();
+  return *this;
 }
 
 QMine::ConnectionDialog *QMine::ConnectionDialog::operator=(ConnectionDialog const* cd) {
-	ui = cd->ui;
+  ui = cd->ui;
 
-	connections();
-	return this;
+  connections();
+  return this;
 }
 
 QMine::ConnectionDialog::~ConnectionDialog() {
-	delete ui;
+  delete ui;
 }
 
 void QMine::ConnectionDialog::connections() {
-	connect(ui->connectBt, &QPushButton::clicked, [=]() {
-		emit validated(ui->hostname->text(), ui->port->value());
-		this->close();
-	});
-	connect(ui->cancelBt, &QPushButton::clicked, [=]() {
-		this->close();
-	});
+  connect(ui->connectBt, &QPushButton::clicked, [=]() {
+      emit validated(ui->hostname->text(), ui->port->value());
+      this->close();
+    });
+  connect(ui->cancelBt, &QPushButton::clicked, [=]() {
+      this->close();
+    });
 }
